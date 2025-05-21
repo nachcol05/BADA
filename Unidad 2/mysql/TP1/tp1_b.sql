@@ -212,16 +212,20 @@ FROM item_ventas
 -- Punto 3
 SELECT iv.cantidad, p.nombre_producto
 FROM item_ventas iv, productos p
+WHERE iv.codigo_producto = p.codigo_producto
 ORDER BY iv.cantidad desc
 -- Punto 4
 SELECT iv.cantidad, p.nombre_producto
 FROM item_ventas iv, productos p
 WHERE iv.cantidad > 30
+AND iv.codigo_producto = p.codigo_producto
 ORDER BY p.nombre_producto
 
 -- Punto 5
 SELECT iv.numero_factura, c.codigo_cliente, c.nombre
-FROM item_ventas iv, clientes c
+FROM item_ventas iv, clientes c, ventas v
+WHERE v.numero_factura = iv.numero_factura
+AND v.codigo_cliente = c.codigo_cliente
 ORDER BY iv.numero_factura desc
 
 -- Punto 6
@@ -231,6 +235,9 @@ WHERE c.codigo_cliente = 1
 GROUP BY
     iv.codigo_producto;
 
+
+SELECT *
+FROM clientes
 
 
 

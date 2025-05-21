@@ -355,10 +355,12 @@ SELECT
 	 f.razon_social AS razon_social_cliente
 FROM
     pedidos p, empleados e, fabricantes f
-    
+WHERE p.cod_empleado = e.cod_empleado
+
 -- punto 3
 SELECT e.apellido, dc.cuota, e.cod_oficina AS Oficina
 FROM empleados e, datos_contratos dc
+WHERE dc.cod_empleado = e.cod_empleado
 ORDER BY dc.cuota desc
 -- punto 4
 SELECT DISTINCT (c.razon_social)
@@ -377,12 +379,17 @@ ORDER BY dc.fecha_contrato DESC
 
 -- punto 7 nose si se refiere a mayorista por la cantidad o por la razón social que diga mayorista
 SELECT c.cod_cliente , dp.cantidad, c.razon_social
-FROM clientes c, detalle_pedidos dp
+FROM clientes c, detalle_pedidos dp, pedidos p
 WHERE dp.cantidad > 3
+AND c.cod_cliente = p.cod_cliente
+AND p.cod_pedido = dp.cod_pedido
 ORDER BY c.razon_social
 -- punto 8
 SELECT DISTINCT c.cod_cliente, pr.descripcion AS Producto
-FROM clientes c, productos pr
+FROM clientes c, productos pr, detalle_pedidos dp, pedidos p
+WHERE dp.cod_producto = pr.cod_producto
+AND c.cod_cliente = p.cod_cliente
+AND p.cod_pedido = dp.cod_pedido
 ORDER BY c.razon_social AND pr.descripcion
 -- punto 9
 SELECT pr.descripcion, pr.cantidad_stock, pr.punto_reposicion, fr.razon_social
@@ -392,8 +399,8 @@ ORDER BY fr.razon_social AND pr.descripcion
 -- punto10
 SELECT e.cod_empleado, dc.cuota
 FROM empleados e, datos_contratos dc
-WHERE dc.cuota < 5000 OR dc.cuota > 100000
-
+WHERE e.cod_empleado = dc.cod_empleado
+AND dc.cuota < 5000 OR dc.cuota > 100000
 
 
 -- Select Tablas
